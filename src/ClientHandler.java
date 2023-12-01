@@ -6,16 +6,15 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ClientHandler implements Runnable{
+public class ClientHandler implements Runnable {
 
     public static ArrayList<ClientHandler> ListeClients = new ArrayList<>();
-    private Socket socket; 
-    private BufferedReader TempLecture; 
-    private BufferedWriter TempEcriture; 
-    private String pseudoClient; 
+    private Socket socket;
+    private BufferedReader TempLecture;
+    private BufferedWriter TempEcriture;
+    private String pseudoClient;
 
-
-    public ClientHandler(Socket socket){
+    public ClientHandler(Socket socket) {
         try {
             this.socket = socket;
             this.TempEcriture = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -26,34 +25,52 @@ public class ClientHandler implements Runnable{
             e.printStackTrace();
         }
     }
-    
+
     @Override
     public void run() {
         String messageClient;
-        // Tant que le client est encore connecté, on affiche et on lui demande de rentrez son message
-        for(ClientHandler clientHandler : ListeClients){
-            System.out.println(clientHandler.toString());
+        while (socket.isConnected()) {
+            try {
+                messageClient = TempLecture.readLine();
+                diffuserMessage(messageClient);
+            } catch (IOException e) {
+                fermerTout(socket, TempLecture, TempEcriture);
+                break;
+            }
+        }
+    }
+
+    private void diffuserMessage(String messageClient) {
+        for (ClientHandler clientHandler : ListeClients) {
             if (!clientHandler.pseudoClient.equals(pseudoClient)) {
                 try {
-                    messageClient = TempLecture.readLine();
                     clientHandler.TempEcriture.write(messageClient);
                     clientHandler.TempEcriture.newLine();
                     clientHandler.TempEcriture.flush();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    fermerTout(clientHandler.socket, clientHandler.TempLecture, clientHandler.TempEcriture);
                 }
             }
         }
     }
 
-    @Override
-    public String toString() {
-        String listeString = "";
-        for (int i = 0; i < ListeClients.size() ; i++)
-            listeString += "" + ListeClients.get(i) + "\n";
-        return listeString;
+    private void fermerTout(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
+        try {
+            if (socket != null) {
+                socket.close();
+            }
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
     public static void main(String[] args) {
-        
+
     }
 }

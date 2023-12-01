@@ -53,21 +53,17 @@ public class clientProjet {
             System.out.println("Entrez votre pseudo ");
             Scanner sc = new Scanner(System.in);
             String pseudo = sc.nextLine();
-
-            // Envoi du pseudo vers le server
-            OutputStream out = client.getOutputStream();
-            out.write(pseudo.getBytes());
-
-            clientProjet clientProjet = new clientProjet(client, pseudo);
+    
+            clientProjet clientInstance = new clientProjet(client, pseudo);
+            clientInstance.ecouterMessage();
             System.out.println("Commencez à discutez :");
-            clientProjet.ecouterMessage();
-            clientProjet.envoyerMessage();
-
+            clientInstance.envoyerMessage();
+    
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+    
 
     public void ecouterMessage() {
         new Thread(new Runnable() {
@@ -78,7 +74,7 @@ public class clientProjet {
                         msgPourGroupe = TempLecture.readLine();
                         System.out.println(msgPourGroupe);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        break;
                     }
                 }
             }
