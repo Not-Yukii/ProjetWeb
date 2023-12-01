@@ -15,7 +15,7 @@ public class serverProjet {
 			ServerSocket connServer = new ServerSocket(7777);
 			
 			while (!connServer.isClosed()) {
-                Socket  client = connServer.accept();
+                Socket client = connServer.accept();
 
                 //Afficher le client connecté 
                 InputStream clientInput = client.getInputStream();

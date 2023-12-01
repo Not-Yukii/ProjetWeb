@@ -32,6 +32,7 @@ public class ClientHandler implements Runnable{
         String messageClient;
         // Tant que le client est encore connecté, on affiche et on lui demande de rentrez son message
         for(ClientHandler clientHandler : ListeClients){
+            System.out.println(clientHandler.toString());
             if (!clientHandler.pseudoClient.equals(pseudoClient)) {
                 try {
                     messageClient = TempLecture.readLine();
@@ -45,6 +46,13 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    @Override
+    public String toString() {
+        String listeString = "";
+        for (int i = 0; i < ListeClients.size() ; i++)
+            listeString += "" + ListeClients.get(i) + "\n";
+        return listeString;
+    }
     public static void main(String[] args) {
         
     }
