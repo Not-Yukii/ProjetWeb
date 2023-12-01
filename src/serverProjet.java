@@ -26,7 +26,6 @@ public class serverProjet {
                 System.out.println(pseudoClientString +" a rejoint la discussion");
 
                 ClientHandler clientHandler = new ClientHandler(client);
-
                 Thread thread = new Thread(clientHandler);
                 thread.start();
             }
