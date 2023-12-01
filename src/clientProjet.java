@@ -16,9 +16,11 @@ public class clientProjet {
 
     public clientProjet(Socket client, String pseudo) {
         try {
+            // zone en mémoire pour l'écriture
             this.TempEcriture = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
             this.client = client;
             this.pseudo = pseudo;
+            // zone en mémoire pour la lecture
             this.TempLecture = new BufferedReader(new InputStreamReader(client.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,6 +35,7 @@ public class clientProjet {
 
             Scanner sc = new Scanner(System.in);
             while (client.isConnected()) {
+                System.out.print("Vous : ");
                 String message = sc.nextLine();
                 try {
                     TempEcriture.write(pseudo + ":" + message);
