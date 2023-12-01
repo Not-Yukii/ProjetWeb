@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -7,8 +6,6 @@ import java.net.Socket;
  * serverProjet
  */
 public class serverProjet {
-
-    private ServerSocket serverSocket;
 
     public static void main(String[] args) {
         try {
@@ -20,6 +17,8 @@ public class serverProjet {
                 Thread thread = new Thread(clientHandler);
                 thread.start();
             }
+
+            connServer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
