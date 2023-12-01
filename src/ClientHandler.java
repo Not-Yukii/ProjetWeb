@@ -31,21 +31,18 @@ public class ClientHandler implements Runnable{
     public void run() {
         String messageClient;
         // Tant que le client est encore connecté, on affiche et on lui demande de rentrez son message
-        while(socket.isConnected()) {
-            for(ClientHandler clientHandler : ListeClients){
-                if (!clientHandler.pseudoClient.equals(pseudoClient)) {
-                    try {
-                        messageClient = TempLecture.readLine();
-                        clientHandler.TempEcriture.write(messageClient);
-                        clientHandler.TempEcriture.newLine();
-                        clientHandler.TempEcriture.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        for(ClientHandler clientHandler : ListeClients){
+            if (!clientHandler.pseudoClient.equals(pseudoClient)) {
+                try {
+                    messageClient = TempLecture.readLine();
+                    clientHandler.TempEcriture.write(messageClient);
+                    clientHandler.TempEcriture.newLine();
+                    clientHandler.TempEcriture.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
-
     }
 
     public static void main(String[] args) {
