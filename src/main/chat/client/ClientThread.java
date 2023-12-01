@@ -3,7 +3,7 @@ package main.chat.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class ClientThread implements Runnable {
+public class ClientThread extends Thread {
 
     private BufferedReader reader;
 
